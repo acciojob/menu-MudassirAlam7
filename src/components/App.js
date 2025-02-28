@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Menu from "./menu";
 const menuItems = [
     {
@@ -75,26 +75,33 @@ const menuItems = [
       desc: `skateboard fam synth authentic semiotics. Live-edge lyft af, edison bulb yuccie crucifix microdosing.`,
     },
   ]
-
 const categories = ["All", "Breakfast", "Lunch", "Shakes"]
-const App = ()=>{
-     const[category, setCategory] = useState("All")
-
-
-     const filteredItems = category === "All" ? menuItems : menuItems.filter(item => item.category.toLowerCase()==category.toLowerCase())
-
-
-     return(
-        <div className="app">
-            <h1>menu</h1>
-            <div className="buttons">
-                {
-                    categories.map((cat)=>(
-                        <button key={cat} className={category === cat ? "active" : ""} onClick={()=>setCategory(cat)}>{cat}</button>
-                    ))}
-            </div>
-            <Menu items={filteredItems}/>
+  const App = () => {
+    const [category, setCategory] = useState("All");
+  
+    const filteredItems = category === "All"
+      ? menuItems
+      : menuItems.filter(item => item.category.toLowerCase() === category.toLowerCase());
+  
+    useEffect(() => {
+      console.log("Category changed:", category);
+      console.log("Filtered Items:", filteredItems);
+    }, [category]);
+  
+    return (
+      <div className="app">
+        <h1>Menu</h1>
+        <div className="buttons">
+          {categories.map((cat) => (
+            <button key={cat} className={category === cat ? "active" : ""} onClick={() => setCategory(cat)}>
+              {cat}
+            </button>
+          ))}
         </div>
-     )
-}
+        <Menu items={filteredItems} />
+      </div>
+    );
+  };
+
+
 export default App
